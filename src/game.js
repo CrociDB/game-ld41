@@ -46,8 +46,21 @@ class Game {
         document.body.appendChild(this.app.view);
         this.app.ticker.add(delta => this.update(delta));
 
-        // var filter = new PIXI.filters.CRTFilter();
-        // this.app.stage.filters = [filter];
+        this.initFilters();
+    }
+
+    initFilters() {
+        var bloom = new PIXI.filters.BloomFilter();
+        var aberration = new PIXI.filters.RGBSplitFilter();
+        aberration.red.x = 0;
+        aberration.red.y = 1.5;
+        aberration.green.x = 1.5;
+        aberration.green.y = 0;
+        var crt = new PIXI.filters.CRTFilter();
+        crt.curvature = 6;
+        crt.noise = 0.1;
+        crt.lineContrast = .2;
+        this.app.stage.filters = [bloom, aberration, crt];
     }
 
     update(delta) {
