@@ -23,14 +23,14 @@ class Map {
     }
 
     drawTerrain(player) {
-        let farx1 = player.x + Math.cos(player.rotation - player.fov) * this.far;
-        let fary1 = player.y + Math.sin(player.rotation - player.fov) * this.far;
-        let nearx1 = player.x + Math.cos(player.rotation - player.fov) * this.near;
-        let neary1 = player.y + Math.sin(player.rotation - player.fov) * this.near;
-        let farx2 = player.x + Math.cos(player.rotation + player.fov) * this.far;
-        let fary2 = player.y + Math.sin(player.rotation + player.fov) * this.far;
-        let nearx2 = player.x + Math.cos(player.rotation + player.fov) * this.near;
-        let neary2 = player.y + Math.sin(player.rotation + player.fov) * this.near;
+        let farx1 = player.x + Math.cos(player.angle - player.fov) * this.far;
+        let fary1 = player.y + Math.sin(player.angle - player.fov) * this.far;
+        let nearx1 = player.x + Math.cos(player.angle - player.fov) * this.near;
+        let neary1 = player.y + Math.sin(player.angle - player.fov) * this.near;
+        let farx2 = player.x + Math.cos(player.angle + player.fov) * this.far;
+        let fary2 = player.y + Math.sin(player.angle + player.fov) * this.far;
+        let nearx2 = player.x + Math.cos(player.angle + player.fov) * this.near;
+        let neary2 = player.y + Math.sin(player.angle + player.fov) * this.near;
         
         for (let y = 1; y < GAME_HEIGHT / 2; y++) {
             let sampleDepth = y / (GAME_HEIGHT / 2);

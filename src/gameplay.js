@@ -12,6 +12,7 @@ class GamePlay {
     }
     
     update(game) {
+        this.player.update(game.deltaTime);
         this.map.update(game.deltaTime, this.player);
     }
     

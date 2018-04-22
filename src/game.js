@@ -6,6 +6,7 @@ class Game {
         this.state = null;
 
         this.deltaTime = 0;
+        this.input = new Input();
     }
 
     run() {
