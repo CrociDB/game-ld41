@@ -23,12 +23,12 @@ class Map {
     }
 
     drawTerrain(player) {
-        let farx1 = player.x + Math.cos(player.angle - player.fov) * this.far;
-        let fary1 = player.y + Math.sin(player.angle - player.fov) * this.far;
+        let farx1 = player.x + Math.cos(player.angle - player.fov) * (this.far + player.height);
+        let fary1 = player.y + Math.sin(player.angle - player.fov) * (this.far + player.height);
         let nearx1 = player.x + Math.cos(player.angle - player.fov) * this.near;
         let neary1 = player.y + Math.sin(player.angle - player.fov) * this.near;
-        let farx2 = player.x + Math.cos(player.angle + player.fov) * this.far;
-        let fary2 = player.y + Math.sin(player.angle + player.fov) * this.far;
+        let farx2 = player.x + Math.cos(player.angle + player.fov) * (this.far + player.height);
+        let fary2 = player.y + Math.sin(player.angle + player.fov) * (this.far + player.height);
         let nearx2 = player.x + Math.cos(player.angle + player.fov) * this.near;
         let neary2 = player.y + Math.sin(player.angle + player.fov) * this.near;
         
