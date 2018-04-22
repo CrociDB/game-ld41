@@ -1,14 +1,25 @@
 class Game {
     constructor() {
-        this.width = 320;
-        this.height = 240;
+        this.width = GAME_WIDTH;
+        this.height = GAME_HEIGHT;
 
         this.state = null;
-        this.state = null;
+
+        this.deltaTime = 0;
     }
 
     run() {
         this.initPIXI();
+        this.preloadAssets();
+    }
+
+    preloadAssets() {
+        PIXI.loader
+            .add(ASSETS_MAP)
+            .load(this.startGame.bind(this));
+    }
+
+    startGame() {
         this.setState(new GamePlay());
     }
 
@@ -36,6 +47,8 @@ class Game {
     }
 
     update(delta) {
+        this.deltaTime = delta;
+
         if (this.state != null) {
             this.state.update(this);
         }
