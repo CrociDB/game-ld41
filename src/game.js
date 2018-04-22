@@ -1,7 +1,7 @@
 let app;
 
-let sw = 160;
-let sh = 120;
+let sw = 384;
+let sh = 288;
 
 var fieldOfView = 3.14159 / 4.0;
 var posX = 0.0;
@@ -14,30 +14,32 @@ var deltaTime = 0;
 
 let sprite;
 
-Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
+Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b))); };
 
 (function() {
     let type = "WebGL";
     if(!PIXI.utils.isWebGLSupported()){
       type = "canvas";
     }
-
+    
     PIXI.utils.sayHello(type);
-
-    app = new PIXI.Application({width: sw, height: sh, resolution: 3});
+    
+    app = new PIXI.Application({width: sw, height: sh, resolution: 2});
     document.body.appendChild(app.view);
-
+    
     createCanvasTexture();
     loadAssets();
 })();
 
 var newCanvas;
 var newContext;
+var imageData;
 function createCanvasTexture() {
     newCanvas = document.createElement('canvas');
     newCanvas.width  = sw;
     newCanvas.height = sh;
     newContext = newCanvas.getContext('2d');
+    imageData = newContext.createImageData(sw, sh);
     // document.body.appendChild(newCanvas);
 
     // for (let i = 0; i < sw; i++)
@@ -55,15 +57,15 @@ function createCanvasTexture() {
 }
 
 let left = keyboard(37),
-    up = keyboard(38),
-    right = keyboard(39),
-    down = keyboard(40),
-    key_q = keyboard(81),
-    key_e = keyboard(69),
-    key_a = keyboard(65),
-    key_d = keyboard(68),
-    key_z = keyboard(90),
-    key_c = keyboard(67);
+up = keyboard(38),
+right = keyboard(39),
+down = keyboard(40),
+key_q = keyboard(81),
+key_e = keyboard(69),
+key_a = keyboard(65),
+key_d = keyboard(68),
+key_z = keyboard(90),
+key_c = keyboard(67);
 
 
 function loadAssets() {
@@ -100,6 +102,14 @@ function putPixel(x, y, col) {
     newContext.fillRect( x, y, 1, 1 );
 }
 
+function putDataPixel(x, y, col) {
+    let i = (x + (y * sw)) * 4;
+    imageData.data[i] = col.r;
+    imageData.data[i+1] = col.g;
+    imageData.data[i+2] = col.b;
+    imageData.data[i+3] = 255;
+}
+
 
 
 function getNPixel(x, y) {
@@ -118,9 +128,11 @@ function clearCanvas() {
     newContext.clearRect(0, 0, newContext.width, newContext.height);
 }
 
+
 function update(delta) {
     deltaTime = app.ticker.deltaTime;
-    clearCanvas();
+    // clearCanvas();
+
         
     let farx1 = posX + Math.cos(posA - fieldOfView) * far;
     let fary1 = posY + Math.sin(posA - fieldOfView) * far;
@@ -148,7 +160,8 @@ function update(delta) {
             let sampleY = (endY - startY) * sampleWidth + startY;
             
             let color = getNPixel(sampleX, sampleY);
-            putPixel(x, y + sh / 2, color);
+            // putPixel(x, y + sh / 2, color);
+            putDataPixel(x, y + sh / 2, color);
         }
     }
     
@@ -173,11 +186,11 @@ function update(delta) {
 
     // Near
     if (key_q.isDown) {
-        near -= 0.1 * deltaTime;
+        near -= 0.001 * deltaTime;
     }
 
     if (key_e.isDown) {
-        near += 0.01 * deltaTime;
+        near += 0.001 * deltaTime;
     }
     
     // Far
@@ -201,6 +214,7 @@ function update(delta) {
 
 
     // Update texture
+    newContext.putImageData(imageData, 0, 0);
     sprite.texture.update();
 }
 
