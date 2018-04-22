@@ -30,7 +30,7 @@ class Player {
     }
 
     updateSpites() {
-        this.shipSprite.y = Math.sin(this.time * .07) * 1.5;
+        this.shipSprite.y = Math.sin(this.time * .08) * 3.5;
     }
 
     updateSpeed(deltaTime) {
