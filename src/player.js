@@ -2,10 +2,9 @@ class Player {
     constructor() {
         this.fov = 3.14159 / 4.0;
 
-        this.height = 0.1;
-
         this.x = 0.0;
         this.y = 0.0;
+        this.z = 0.1;
 
         this.speed = 0.006;
 
@@ -24,11 +23,11 @@ class Player {
 
     getInput(deltaTime) {
         if (game.input.keyDown(KEY_UP)) {
-            this.height += 0.005 * deltaTime;
+            this.z += 0.005 * deltaTime;
         }
         
         if (game.input.keyDown(KEY_DOWN)) {
-            this.height -= 0.005 * deltaTime;
+            this.z -= 0.005 * deltaTime;
         }
     
         // if (game.input.keyDown(KEY_LEFT)) {
