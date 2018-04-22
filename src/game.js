@@ -45,6 +45,9 @@ class Game {
 
         document.body.appendChild(this.app.view);
         this.app.ticker.add(delta => this.update(delta));
+
+        // var filter = new PIXI.filters.CRTFilter();
+        // this.app.stage.filters = [filter];
     }
 
     update(delta) {
