@@ -16,6 +16,7 @@ class Game {
 
     preloadAssets() {
         PIXI.loader
+            .add(ASSETS_SHIP)
             .add(ASSETS_MAP)
             .load(this.startGame.bind(this));
     }
@@ -51,16 +52,17 @@ class Game {
 
     initFilters() {
         var bloom = new PIXI.filters.BloomFilter();
+        bloom.blur = 5;
         var aberration = new PIXI.filters.RGBSplitFilter();
         aberration.red.x = 0;
-        aberration.red.y = 1.5;
-        aberration.green.x = 1.5;
+        aberration.red.y = .5;
+        aberration.green.x = .5;
         aberration.green.y = 0;
         var crt = new PIXI.filters.CRTFilter();
         crt.curvature = 6;
         crt.noise = 0.1;
         crt.lineContrast = .2;
-        this.app.stage.filters = [bloom, aberration, crt];
+        this.app.stage.filters = [blur, aberration, crt];
     }
 
     update(delta) {

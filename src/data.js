@@ -2,6 +2,7 @@ const GAME_WIDTH = 320;
 const GAME_HEIGHT = 240;
 
 const ASSETS_MAP = "assets/pattern.png";
+const ASSETS_SHIP = "assets/ship.png";
 
 const KEY_LEFT = "keyleft";
 const KEY_RIGHT = "keyright";

@@ -9,6 +9,7 @@ class GamePlay {
         game.app.stage.addChild(this.container);
         
         this.container.addChild(this.map.container);
+        this.container.addChild(this.player.sprite);
     }
     
     update(game) {
