@@ -30,12 +30,12 @@ class Player {
             this.z -= 0.005 * deltaTime;
         }
     
-        // if (game.input.keyDown(KEY_LEFT)) {
-        //     this.angle -= 0.05 * deltaTime;
-        // }
+        if (game.input.keyDown(KEY_LEFT)) {
+            this.angle -= 0.05 * deltaTime;
+        }
     
-        // if (game.input.keyDown(KEY_RIGHT)) {
-        //     this.angle += 0.05 * deltaTime;
-        // }
+        if (game.input.keyDown(KEY_RIGHT)) {
+            this.angle += 0.05 * deltaTime;
+        }
     }
 }

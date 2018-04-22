@@ -1,5 +1,9 @@
 class Map {
     constructor() {
+        this.fogColor = { r: 0, g: 0, b: 0 };
+        this.fogDistance = 0.9;
+
+        this.skyHeight = 0.5;
         this.near = 0.005;
         this.far = 0.1;
 
@@ -17,6 +21,7 @@ class Map {
 
     update(deltaTime, player) {
         this.drawTerrain(player);
+        this.drawSky(player);
 
         this.helperCanvas.update();
         this.mapSprite.texture.update();
@@ -32,7 +37,7 @@ class Map {
         let nearx2 = player.x + Math.cos(player.angle + player.fov) * this.near;
         let neary2 = player.y + Math.sin(player.angle + player.fov) * this.near;
         
-        for (let y = 1; y < GAME_HEIGHT / 2; y++) {
+        for (let y = 20; y < GAME_HEIGHT / 2; y++) {
             let sampleDepth = y / (GAME_HEIGHT / 2);
             
             let startX = (farx1 - nearx1) / (sampleDepth) + nearx1;
@@ -40,15 +45,50 @@ class Map {
             let endX = (farx2 - nearx2) / (sampleDepth) + nearx2;
             let endY = (fary2 - neary2) / (sampleDepth) + neary2;
             
-            for (let x = 1; x < GAME_WIDTH; x++) {
+            for (let x = 0; x < GAME_WIDTH; x++) {
                 let sampleWidth = x / GAME_WIDTH;
                 let sampleX = (endX - startX) * sampleWidth + startX;
                 let sampleY = (endY - startY) * sampleWidth + startY;
                 
                 let color = this.textureSampler.getColorAtNormalized(sampleX, sampleY);
+                color = this.fog(color, 1 - sampleDepth);
                 this.helperCanvas.putDataPixel(x, y + GAME_HEIGHT / 2, color);
             }
         }
+    }
+
+    drawSky(player) {
+        let farx1 = player.x + Math.cos(player.angle - player.fov) * (this.far + this.skyHeight - player.z);
+        let fary1 = player.y + Math.sin(player.angle - player.fov) * (this.far + this.skyHeight - player.z);
+        let nearx1 = player.x + Math.cos(player.angle - player.fov) * this.near;
+        let neary1 = player.y + Math.sin(player.angle - player.fov) * this.near;
+        let farx2 = player.x + Math.cos(player.angle + player.fov) * (this.far + this.skyHeight - player.z);
+        let fary2 = player.y + Math.sin(player.angle + player.fov) * (this.far + this.skyHeight - player.z);
+        let nearx2 = player.x + Math.cos(player.angle + player.fov) * this.near;
+        let neary2 = player.y + Math.sin(player.angle + player.fov) * this.near;
+        
+        for (let y = 20; y < GAME_HEIGHT / 2; y++) {
+            let sampleDepth = y / (GAME_HEIGHT / 2);
+            
+            let startX = (farx1 - nearx1) / (sampleDepth) + nearx1;
+            let startY = (fary1 - neary1) / (sampleDepth) + neary1;
+            let endX = (farx2 - nearx2) / (sampleDepth) + nearx2;
+            let endY = (fary2 - neary2) / (sampleDepth) + neary2;
+            
+            for (let x = 0; x < GAME_WIDTH; x++) {
+                let sampleWidth = x / GAME_WIDTH;
+                let sampleX = (endX - startX) * sampleWidth + startX;
+                let sampleY = (endY - startY) * sampleWidth + startY;
+                
+                let color = this.textureSampler.getColorAtNormalized(sampleX, sampleY);
+                color = this.fog(color, 1 - sampleDepth);
+                this.helperCanvas.putDataPixel(x, (GAME_HEIGHT / 2) - y, color);
+            }
+        }
+    }
+
+    fog(color, dist) {
+        return colorLerp(color, this.fogColor, ((dist * dist) / this.fogDistance));
     }
 }
 
